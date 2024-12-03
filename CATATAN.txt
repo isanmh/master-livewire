@@ -1,0 +1,101 @@
+# cara install laravel livewire :
+composer require livewire/livewire
+php artisan livewire:publish --config
+
+# create component laravel livewire :
+php artisan make:livewire nama-component
+php artisan make:livewire LandingPage
+
+# check & create component layouts :
+php artisan livewire:layout
+- CLASS: resources/views/components/layouts/app.blade.php
+
+# tambahkan livewire styles :
+@livewireStyles
+@livewireScripts
+    atau
+@stack(styles)
+@stack(scripts)
+
+# view push live wire :
+@push(styles)
+    @livewireStyles
+@endpush
+
+@push(scripts)
+    @livewireScripts
+@endpush
+
+# untuk navigasi :
+wire:navigate
+
+# title dinamis :
+#[Title('About Page')] > pada component file
+<title>{{ $title }}</title>
+
+# pemnggilan component :
+<livewire:component-name />
+
+# handle click event :
+wire:click="method"
+wire:submit.prevent="method"
+
+# laravel ui bootstrap :
+composer require laravel/ui
+php artisan ui bootstrap --auth
+npm install && npm run dev
+
+# Dashboard component :
+php artisan make:livewire dashboard.index
+php artisan make:livewire auth.login
+
+# delete component :
+php artisan livewire:delete NavbarTop
+
+# membuat database seed & factory :
+php artisan make:seeder ProductSeeder
+php artisan make:factory ProductFactory
+
+# Jalankan seeder :
+php artisan db:seed --class=ProductSeeder
+
+# upload file :
+php artisan storage:link
+
+# create.php
+use WithFileUploads;
+
+$this->image->storeAs('assets/images', $imageName, 'public');
+unlink(storage_path('app/public/assets/images/' . $this->product->image));
+
+# view :
+<div wire:loading wire:target='image' class="mt-2">
+    <span class="text-success">
+        {{-- icon bi loading --}}
+        <i class="bi bi-arrow-clockwise"></i>
+        uploading...
+    </span>
+</div>
+
+{{-- image temporary --}}
+@if ($image)
+    <div class="col-sm-10 mt-2">
+        <img src="{{ $image->temporaryUrl() }}" width="100">
+    </div>
+@endif
+
+#search live wire :
+use WithPagination;
+
+// updating+Search
+public function updatingSearch()
+{
+    // $this->resetPage();
+    $this->gotoPage(1);
+}
+
+# wire:model.live.debounce.1000ms
+<div class="d-flex col-md-8 col-sm-6">
+    <input wire:model.live.debounce.1000ms="search" type="text"
+        class="form-control form-control-sm" placeholder="Search">
+</div>

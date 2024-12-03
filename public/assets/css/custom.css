@@ -1,0 +1,14 @@
+.animasi {
+    animation: atasbawah 4s ease-in-out alternate-reverse infinite both;
+}
+
+/* ini untuk animasi keyframe */
+@keyframes atasbawah {
+    0%,
+    100% {
+        transform: translateY(10px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
