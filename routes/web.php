@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProductContoller;
 use App\Livewire\About;
 use App\Livewire\Crud\CardDetail;
 use App\Livewire\Crud\FormCreate;
@@ -30,9 +32,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/crud', function () {
-//     return view('crud.index');
-// });
+Route::get('/dashboard', function () {
+    return view('pages.index');
+})->name('dashboard');
+
+// categories routes
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+// products resource routes
+Route::resource('products', ProductContoller::class);
+
+
 
 Route::get('/crud', TableList::class);
 Route::get('/crud/create', FormCreate::class);
@@ -52,11 +67,11 @@ Route::get('/register', Register::class)->name('register');
 Route::get('/login', Login::class)->name('login');
 // Route::post('/logout', [Login::class, 'logout'])->name('logout');
 
-// middleware group
+// middleware group livewire
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/dashboard', Index::class)->name('dashboard');
-    Route::get('/products', ProductsList::class)->name('products');
-    Route::get('/create', ProductCreate::class)->name('create');
-    Route::get('/products/{id}/edit', ProductEdit::class)->name('edit');
-    Route::get('/products/show/{id}', ProductShow::class)->name('show');
+    // Route::get('/dashboard', Index::class)->name('dashboard');
+    // Route::get('/products', ProductsList::class)->name('products');
+    // Route::get('/create', ProductCreate::class)->name('create');
+    // Route::get('/products/{id}/edit', ProductEdit::class)->name('edit');
+    // Route::get('/products/show/{id}', ProductShow::class)->name('show');
 });

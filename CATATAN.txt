@@ -53,10 +53,13 @@ php artisan make:livewire auth.login
 php artisan livewire:delete NavbarTop
 
 # membuat database seed & factory :
+php artisan make:seeder CategorySeeder
+php artisan make:factory CategoryFactory
 php artisan make:seeder ProductSeeder
 php artisan make:factory ProductFactory
 
 # Jalankan seeder :
+php artisan db:seed --class=CategorySeeder
 php artisan db:seed --class=ProductSeeder
 
 # upload file :
