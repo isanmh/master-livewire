@@ -36,6 +36,11 @@ Route::get('/dashboard', function () {
     return view('pages.index');
 })->name('dashboard');
 
+Route::get('/', [PagesController::class, 'homepage']);
+Route::get('about', [PagesController::class, 'about'])->name('about');
+
+// Route::middleware(['auth:sanctum'])->group(function () {
+
 // categories routes
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
@@ -46,7 +51,9 @@ Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])-
 
 // products resource routes
 Route::resource('products', ProductContoller::class);
+Route::get('/search-item', [ProductContoller::class, 'search'])->name('search');
 
+// });
 
 
 Route::get('/crud', TableList::class);
@@ -55,10 +62,10 @@ Route::get('/crud/{id}/edit', FormEdit::class);
 Route::get('/crud/show/{id}', CardDetail::class);
 
 // live wire
-Route::get('/', LandingPage::class);
-Route::get('/about', About::class);
-Route::get('/about/{name}', About::class);
-Route::get('/test', Test::class);
+// Route::get('/', LandingPage::class);
+// Route::get('/about', About::class);
+// Route::get('/about/{name}', About::class);
+// Route::get('/test', Test::class);
 
 Auth::routes(['register' => false, 'login' => false, 'logout' => true]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');

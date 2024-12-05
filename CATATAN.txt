@@ -62,6 +62,15 @@ php artisan make:factory ProductFactory
 php artisan db:seed --class=CategorySeeder
 php artisan db:seed --class=ProductSeeder
 
+# cara membuat Foregn Key Category > Product :
+$table->unsignedBigInteger('category_id');
+$table->foreign('category_id')->references('id')->on('categories');
+
+$table->foreignId('category_id')->constrained()->onDelete('cascade');
+
+Categoty > product = hasMany (1 to many)
+Product > Category = belongsTo (many to 1)
+
 # upload file :
 php artisan storage:link
 

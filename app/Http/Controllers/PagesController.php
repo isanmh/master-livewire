@@ -6,18 +6,18 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
-    public function index()
+    public function homepage()
     {
-        return view('pages.index');
+        return view('pages.homepage');
     }
 
-    public function create()
+    public function about()
     {
-        return view('pages.create');
-    }
-
-    public function edit($id)
-    {
-        return view('pages.edit', compact('id'));
+        return view('pages.about', [
+            'name' => 'Ihsan Miftahul Huda',
+            'address' => 'Bandung',
+            'job' => 'Fullstack Developer',
+            'image' => 'https://avatars.githubusercontent.com/u/47204300?v=4'
+        ]);
     }
 }
