@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire\Dashboard;
+namespace App\Livewire\Crud;
 
 use App\Models\Product;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ProductCreate extends Component
+class FormCreate extends Component
 {
     use WithFileUploads;
 
-    #[Layout('components.layouts.main')]
+    #[Layout('layouts.master')]
 
     #[Rule('required|string|max:255', message: 'nama harus diisi')]
     public $name;
@@ -33,7 +32,7 @@ class ProductCreate extends Component
         $input = $this->all();
 
         if ($this->image) {
-            $imageName = date('YmdHis') . '.' . $this->image->extension();
+            $imageName = date('YmdHis') . '-' . $this->image->getClientOriginalName();
             $this->image->storeAs('assets/images', $imageName, 'public');
             $input['image'] = $imageName;
         } else {
@@ -42,11 +41,11 @@ class ProductCreate extends Component
 
         Product::create($input);
         session()->flash('message', 'Product successfully created.');
-        return $this->redirect('products', navigate: true);
+        return $this->redirect('/crud', navigate: true);
     }
 
     public function render()
     {
-        return view('livewire.dashboard.product-create');
+        return view('livewire.crud.form-create');
     }
 }

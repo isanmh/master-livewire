@@ -58,15 +58,15 @@
                                     </div>
 
                                     {{-- image temporary --}}
-                                    @if ($image && is_object($image))
+                                    @if ($image)
                                         <div class="col-sm-10 mt-2">
                                             <img src="{{ $image->temporaryUrl() }}" class="img-fluid" alt="image"
                                                 width="70">
                                         </div>
-                                    @else
+                                    @elseif ($oldImage)
                                         <div class="col-sm-10 mt-2">
-                                            <img src="{{ asset('storage/assets/images/' . $image) }}" class="img-fluid"
-                                                alt="image" width="70">
+                                            <img src="{{ asset('storage/assets/images/' . $oldImage) }}"
+                                                class="img-fluid" alt="image" width="70">
                                         </div>
                                     @endif
                                 </div>

@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PagesController;
 use App\Livewire\About;
+use App\Livewire\Crud\CardDetail;
+use App\Livewire\Crud\FormCreate;
+use App\Livewire\Crud\FormEdit;
+use App\Livewire\Crud\TableList;
 use App\Livewire\Dashboard\Index;
 use App\Livewire\Dashboard\ProductCreate;
 use App\Livewire\Dashboard\ProductEdit;
@@ -25,9 +30,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
+// Route::get('/crud', function () {
+//     return view('crud.index');
 // });
+
+Route::get('/crud', TableList::class);
+Route::get('/crud/create', FormCreate::class);
+Route::get('/crud/{id}/edit', FormEdit::class);
+Route::get('/crud/show/{id}', CardDetail::class);
 
 // live wire
 Route::get('/', LandingPage::class);
