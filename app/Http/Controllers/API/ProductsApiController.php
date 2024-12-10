@@ -11,9 +11,10 @@ class ProductsApiController extends Controller
 {
     public function index()
     {
-        $products = Product::latest()->paginate(5);
-        $products->load('category');
+        // $products = Product::latest()->paginate(5);
+        // $products->load('category');
 
+        $products = Product::with('category')->paginate(5);
         return response()->json(
             $products,
             Response::HTTP_OK
