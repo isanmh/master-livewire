@@ -17,13 +17,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     {{-- flash --}}
-                    @if (session()->has('message'))
+                    {{-- @if (session()->has('message'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('message') }}
                             <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                         </div>
-                    @endif
+                    @endif --}}
                     <div class="card">
                         <div class="card-body">
                             {{-- search --}}
@@ -71,8 +71,8 @@
                                                     <a href="/products/{{ $item->id }}/edit"
                                                         class="bi bi-pencil btn btn-sm btn-warning"></a>
                                                     {{-- delete --}}
-                                                    <button type="submit" class="bi bi-trash btn btn-sm btn-danger"
-                                                        onclick="return confirm('Are you sure?')"></button>
+                                                    <button id="deleteData" type="submit"
+                                                        class="bi bi-trash btn btn-sm btn-danger"></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -88,3 +88,37 @@
         </section>
     </main>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- sweet Alert --}}
+    <script>
+        @if (session('message'))
+            Swal.fire({
+                icon: "success",
+                title: "{{ session('message') }}",
+                showConfirmButton: true,
+                timer: 1500
+            });
+        @endif
+
+        // confirm delete with sweet Alert
+        document.getElementById('deleteData').addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.parentNode.submit();
+                }
+            });
+        });
+    </script>
+@endpush
