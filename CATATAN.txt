@@ -111,3 +111,91 @@ public function updatingSearch()
     <input wire:model.live.debounce.1000ms="search" type="text"
         class="form-control form-control-sm" placeholder="Search">
 </div>
+
+============JWT AUTH==========
+Cara membuat JWT Auth :
+1. composer require tymon/jwt-auth
+2. php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+3. php artisan jwt:secret
+4. tambahkan di .env :
+JWT_SECRET=secret
+5. tambahkan di config/app.php :
+'providers' => [
+    ...
+    Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+],
+'aliases' => [
+    ...
+    'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+    'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+],
+
+======Custom Header=========
+cara membuat middleware :
+php artisan make:middleware CustomHeader
+
+- masuk kernel.php :
+protected $routeMiddleware = [
+    ...
+    'snap-bi' => \App\Http\Middleware\CustomHeader::class,
+];
+
+- setting AuthController Header:
+public const Header = [
+        'X-PARTNER-ID' => 'INIXINDO',
+        'X-TIMESTAMP' => '2024-10-02',
+        'X-SIGNATURE' => '123456'
+];
+
+- setting di CustomHeader.php :
+public function handle(Request $request, Closure $next): Response
+    {
+        // custom header
+        $ah = AuthController::Header;
+        $res1 = $request->header('X-PARTNER-ID');
+        $res2 = $request->header('X-TIMESTAMP');
+        $res3 = $request->header('X-SIGNATURE');
+
+        // logika header custom
+        if (
+            $res1 === $ah['X-PARTNER-ID']
+            && $res2 === $ah['X-TIMESTAMP']
+            && $res3 === $ah['X-SIGNATURE']
+        ) {
+            return $next($request);
+        } else {
+            // jika salah satu header tidak sesuai
+            return response()->json([
+                'status' => 503,
+                'message' => 'Silahkan cek kembali header custom Anda',
+            ], 503);
+        }
+    }
+
+- setting route :
+Route::get('/test-api', function () {
+    return response()->json([
+        'status' => 200,
+        'message' => 'Hai, ini adalah test API',
+    ]);
+})->middleware(['auth:api', 'snap-bi']);
+
+4. Install Laravel Octane :
+composer require laravel/octane
+php artisan octane:install
+php artisan octane:start
+
+5. install pest laravel :
+composer remove phpunit/phpunit
+composer require pestphp/pest --dev --with-all-dependencies
+
+./vendor/bin/pest --init
+./vendor/bin/pest
+
+composer require pestphp/pest-plugin-stressless --dev
+
+stress test :
+./vendor/bin/pest stress pestphp.com
+./vendor/bin/pest stress http://127.0.0.1:8000
+./vendor/bin/pest stress http://127.0.0.1:8000 --concurrency=2
+./vendor/bin/pest stress http://127.0.0.1:8000 --concurrency=10 --requests=100
